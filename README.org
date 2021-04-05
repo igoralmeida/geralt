@@ -1,0 +1,26 @@
+#+TITLE:   Geralt - an Emacs frontend to grit
+
+* Description
+
+Geralt is a very thin wrapper on top of [[https://github.com/climech/grit][grit]], just to see if I could. The main
+idea is to make the commands (add, delete, check, etc.) one or two keypresses
+away.
+
+It uses [[https://github.com/magit/transient][transient]] for the menus, and [[https://github.com/emacs-evil/evil][evil]] for the navigation.
+
+* Prerequisites
+
+- The =grit= binary
+- transient and evil packages on your emacs
+
+* Installation and configuration
+
+- Put this folder in your load path and ~(require 'geralt)~.
+  + ... or just open =geralt.el= and evaluate the buffer.
+- After that, you might want to configure ~geralt-grit-executable~.
+
+* Usage
+
+Run the =geralt= command, for example with =M-x geralt=. Press =?= in a geralt buffer to see possible actions.
+
+* Troubleshooting
