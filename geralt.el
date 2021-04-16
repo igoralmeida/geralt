@@ -65,6 +65,8 @@
     (evil-define-key* 'normal map "a" #'geralt-add)
     (evil-define-key* 'normal map "c" #'geralt-toggle-check)
     (evil-define-key* 'normal map "d" #'geralt-remove)
+    (evil-define-key* 'normal map "i" #'geralt-alias)
+    (evil-define-key* 'normal map "u" #'geralt-unalias)
     (evil-define-key* 'normal map "q" #'kill-this-buffer)
     (evil-define-key* 'normal map "r" #'geralt-refresh)
     (evil-define-key* 'normal map "t" #'geralt-tree)
@@ -219,12 +221,38 @@ nodes will be orphaned (but grit might show them with `grit ls')."
   ["Actions"
    ("RET" "Confirm remove node" geralt-rm-doit)])
 
+(defun geralt-alias-doit (node alias)
+  "Add the ALIAS for NODE."
+  (geralt--grit-command nil "alias" (format "%d" node) alias))
+
+(defun geralt-alias (alias)
+  "Create an ALIAS for the current node."
+  (interactive "sAlias: ")
+  (let ((node (geralt--get-node-at-line)))
+    (geralt-alias-doit node alias)
+    (geralt-refresh)))
+
+(defun geralt-unalias-doit ()
+  "Remove the alias from the current node."
+  (interactive)
+  (let ((node (geralt--get-node-at-line)))
+    (geralt--grit-command nil "unalias" (format "%d" node))
+    (geralt-refresh))
+  )
+
+(transient-define-prefix geralt-unalias ()
+  "Remove current node's alias."
+  ["Actions"
+   ("RET" "Confirm unalias node" geralt-unalias-doit)])
+
 (transient-define-prefix geralt-dispatch ()
   "List available commands."
   ["Actions"
    ("a" "Add a child (or root) node" geralt-add)
    ("c" "Check/uncheck node"         geralt-toggle-check)
    ("d" "Delete node(s)"             geralt-remove)
+   ("i" "Alias"                      geralt-alias)
+   ("u" "Unalias"                    geralt-unalias)
    ("r" "Refresh"                    geralt-refresh)
    ("t" "Root at node"               geralt-tree)])
 
