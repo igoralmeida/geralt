@@ -73,9 +73,9 @@
   )
 
 (setq geralt--geralt-mode-highlights
-      '(("([0-9]+)" . font-lock-reference-face)
-        ("\\[.\\]" . font-lock-type-face)
-        ("^\\* .*" . font-lock-comment-face)))
+      '(("(\\([0-9]+\\)\\(:.*\\)?)" . font-lock-reference-face)
+        ("\\[.\\]"                  . font-lock-type-face)
+        ("^\\* .*"                  . font-lock-comment-face)))
 
 (define-derived-mode geralt-mode nil
   "Geralt"
@@ -91,11 +91,17 @@
       (message (buffer-string)))))
 
 (defun geralt--get-node-at-line ()
-  "Return the node number at the current line."
+  "Return the node number at the current line.
+
+I've tried, but aliases may still fool this."
   (save-excursion
     (end-of-line)
     (backward-char 1)
-    (thing-at-point 'number)))
+    (when (looking-at ")")
+      (evil-jump-item)
+      (let ((has-id (looking-at "(\\([0-9]+\\)\\(:.*\\)?)")))
+        (when has-id
+          (string-to-number (match-string-no-properties 1)))))))
 
 (defun geralt ()
   "Open the main geralt buffer."
