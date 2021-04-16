@@ -100,10 +100,13 @@
 (defun geralt ()
   "Open the main geralt buffer."
   (interactive)
-  (let ((b (generate-new-buffer "*geralt*")))
-    (pop-to-buffer b)
-    (geralt-refresh)
-    (geralt-mode)))
+  (if (or (not geralt-grit-executable)
+          (not (file-executable-p geralt-grit-executable)))
+      (message "Couldn't find/execute grit, check geralt-grit-executable")
+    (let ((b (generate-new-buffer "*geralt*")))
+      (pop-to-buffer b)
+      (geralt-refresh)
+      (geralt-mode))))
 
 (defun geralt--render-as-root (node buffer)
   "Render a node as root."
