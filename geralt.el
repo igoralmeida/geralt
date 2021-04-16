@@ -84,10 +84,11 @@
 
 (defun geralt--grit-command (outbuf &rest args)
   "Run a grit command, send the output somewhere."
-  (let ((full-command
-         (concat  " " (s-join " " `(,geralt-grit-executable ,@args)))))
-    (let ((shell-command-dont-erase-buffer 'end-last-out))
-      (shell-command full-command outbuf))))
+  (with-temp-buffer
+    (apply #'call-process geralt-grit-executable
+           nil (or outbuf (current-buffer)) nil args)
+    (unless outbuf
+      (message (buffer-string)))))
 
 (defun geralt--get-node-at-line ()
   "Return the node number at the current line."
@@ -121,14 +122,10 @@
   (with-current-buffer buffer
     (insert "* grit\n")
     (geralt--grit-command buffer)
-    (goto-char (point-max)) ;TODO don't know why shell-command isn't putting point after
-                    ;output, so i have to do it here
     (insert "* grit list\n")
     (geralt--grit-command buffer "ls")
-    (goto-char (point-max))
     (insert "* grit list-dates\n")
-    (geralt--grit-command buffer "lsd")
-    (goto-char (point-max))))
+    (geralt--grit-command buffer "lsd")))
 
 (defun geralt-refresh (&optional buffer)
   "Refresh a geralt buffer."
@@ -145,6 +142,7 @@
       ;TODO while this "works" --- point returns to (roughly) the same place it
       ;was before the buffer was erased ---, a more intelligent way to preserve
       ;cursor position would be better
+      (goto-char (point-min))
       (forward-char (- pos 1))
       (read-only-mode 1))))
 
