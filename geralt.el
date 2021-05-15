@@ -67,7 +67,7 @@
     (evil-define-key* 'normal map "d" #'geralt-remove)
     (evil-define-key* 'normal map "i" #'geralt-alias)
     (evil-define-key* 'normal map "u" #'geralt-unalias)
-    (evil-define-key* 'normal map "q" #'kill-this-buffer)
+    (evil-define-key* 'normal map "q" #'kill-current-buffer)
     (evil-define-key* 'normal map "r" #'geralt-refresh)
     (evil-define-key* 'normal map "t" #'geralt-tree)
     map)
