@@ -8,6 +8,8 @@ away.
 
 It uses [[https://github.com/magit/transient][transient]] for the menus, and [[https://github.com/emacs-evil/evil][evil]] for the navigation.
 
+[[file:screenshot.png]]
+
 * Prerequisites
 
 - The =grit= binary
