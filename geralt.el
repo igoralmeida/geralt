@@ -111,7 +111,7 @@ I've tried, but aliases may still fool this."
   (if (or (not geralt-grit-executable)
           (not (file-executable-p geralt-grit-executable)))
       (message "Couldn't find/execute grit, check geralt-grit-executable")
-    (let ((b (generate-new-buffer "*geralt*")))
+    (let ((b (get-buffer-create "*geralt*")))
       (pop-to-buffer b)
       (geralt-refresh)
       (geralt-mode))))
@@ -161,9 +161,9 @@ I've tried, but aliases may still fool this."
   "Open a new buffer with the root at current node."
   (interactive)
   (let* ((node (geralt--get-node-at-line))
-         (buffer (generate-new-buffer (format "*geralt*<root:%d>" node))))
     (geralt--render-as-root node buffer)
     (pop-to-buffer buffer)
+         (buffer (get-buffer-create (format "*geralt*<root:%d>" node))))
     (geralt-mode)))
 
 (defun geralt--get-state-at-line ()
