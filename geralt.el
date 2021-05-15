@@ -70,6 +70,7 @@
     (evil-define-key* 'normal map "q" #'kill-current-buffer)
     (evil-define-key* 'normal map "r" #'geralt-refresh)
     (evil-define-key* 'normal map "t" #'geralt-tree)
+    (evil-define-key* 'normal map "T" #'geralt-tree-new-window)
     map)
   ;; "Keymap for geralt-mode.")
   )
@@ -157,13 +158,21 @@ I've tried, but aliases may still fool this."
       (forward-char (- pos 1))
       (read-only-mode 1))))
 
-(defun geralt-tree ()
-  "Open a new buffer with the root at current node."
+(defun geralt-tree-new-window ()
+  "Use a new window for `geralt-tree'."
   (interactive)
+  (geralt-tree t))
+
+(defun geralt-tree (&optional new-window)
+  "Open a new buffer with the root at current node."
+  (interactive "P")
   (let* ((node (geralt--get-node-at-line))
     (geralt--render-as-root node buffer)
-    (pop-to-buffer buffer)
          (buffer (get-buffer-create (format "*geralt*<root:%d>" node))))
+    (pop-to-buffer buffer
+                   (if (not new-window)
+                       (cons #'display-buffer-same-window '())
+                     (cons #'display-buffer-pop-up-window '())))
     (geralt-mode)))
 
 (defun geralt--get-state-at-line ()
