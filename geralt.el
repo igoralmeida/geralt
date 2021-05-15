@@ -167,12 +167,12 @@ I've tried, but aliases may still fool this."
   "Open a new buffer with the root at current node."
   (interactive "P")
   (let* ((node (geralt--get-node-at-line))
-    (geralt--render-as-root node buffer)
          (buffer (get-buffer-create (format "*geralt*<root:%d>" node))))
     (pop-to-buffer buffer
                    (if (not new-window)
                        (cons #'display-buffer-same-window '())
                      (cons #'display-buffer-pop-up-window '())))
+    (geralt-refresh)
     (geralt-mode)))
 
 (defun geralt--get-state-at-line ()
