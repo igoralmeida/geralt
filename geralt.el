@@ -179,11 +179,11 @@ I've tried, but aliases may still fool this."
   "Return the completion status for the node at the current line."
   (save-excursion
     (beginning-of-line)
-    (re-search-forward "\\[\\([ x~]\\)\\]")
+    (re-search-forward "\\[\\([ x*~]\\)\\]")
     (pcase (match-string 1)
       (" " 'inactive)
       ("~" 'in-progress)
-      ("x" 'completed))))
+      ((or "x" "*") 'completed))))
 
 (defun geralt-toggle-check-doit (node)
   "Toggle the state of some node."
