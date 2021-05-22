@@ -26,3 +26,11 @@ It uses [[https://github.com/magit/transient][transient]] for the menus, and [[h
 Run the =geralt= command, for example with =M-x geralt=. Press =?= in a geralt buffer to see possible actions.
 
 * Troubleshooting
+** On Doom Emacs, quitting a geralt buffer does not show the previous one
+Doom hides what it thinks are "unreal" buffers. Tell it not to:
+#+begin_src elisp
+;; $DOOMDIR/config.el
+(after! geralt
+  (add-hook! geralt-mode (set-buffer-modified-p nil))
+  (add-to-list 'doom-real-buffer-functions #'geralt-buffer-p t))
+#+end_src

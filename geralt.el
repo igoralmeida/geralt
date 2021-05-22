@@ -192,6 +192,9 @@ I've tried, but aliases may still fool this."
                   ('completed "uncheck"))))
     (geralt--grit-command nil command (format "%d" node))))
 
+(defun geralt-buffer-p (buf)
+  (string-prefix-p "*geralt*" (buffer-name buf)))
+
 (defun geralt-toggle-check ()
   "Toggle the current node state (grit affects children by default)."
   (interactive)
