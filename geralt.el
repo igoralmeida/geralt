@@ -59,7 +59,7 @@
 (defvar geralt-grit-executable (executable-find "grit")
   "Absolute path to the grit executable.")
 
-(setq geralt-mode-map
+(defvar geralt-mode-map
   (let ((map (make-sparse-keymap)))
     (evil-define-key* 'normal map "?" #'geralt-dispatch)
     (evil-define-key* 'normal map "a" #'geralt-add)
@@ -72,8 +72,7 @@
     (evil-define-key* 'normal map "t" #'geralt-tree)
     (evil-define-key* 'normal map "T" #'geralt-tree-new-window)
     map)
-  ;; "Keymap for geralt-mode.")
-  )
+  "Keymap for geralt-mode.")
 
 (setq geralt--geralt-mode-highlights
       '(("(\\([0-9]+\\)\\(:.*\\)?)" . font-lock-reference-face)
@@ -106,6 +105,7 @@ I've tried, but aliases may still fool this."
         (when has-id
           (string-to-number (match-string-no-properties 1)))))))
 
+;;;###autoload
 (defun geralt ()
   "Open the main geralt buffer."
   (interactive)
